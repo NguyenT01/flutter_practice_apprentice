@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'ui/main_screen.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
