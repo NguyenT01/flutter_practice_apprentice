@@ -4,6 +4,11 @@ import 'package:logging/logging.dart';
 
 import 'ui/main_screen.dart';
 
+import 'package:provider/provider.dart';
+import 'data/memory_repository.dart';
+
+import 'mock_service/mock_service.dart';
+
 Future<void> main() async {
   _setupLogging();
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,16 +28,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Recipes',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Colors.white,
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const MainScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<MemoryRepository>(
+          lazy: false,
+          create: (_)=>MemoryRepository()),
+        Provider(create: (_) =>MockService()..create(), lazy: false,),
+      ],
+
+        //4
+        child: MaterialApp(
+          title: 'Recipes',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            brightness: Brightness.light,
+            primaryColor: Colors.white,
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: const MainScreen(),
+        ),
     );
   }
 }
